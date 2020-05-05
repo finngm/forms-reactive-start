@@ -29,10 +29,30 @@ export class AppComponent implements OnInit{
     this.signupForm.statusChanges.subscribe(
       (status) => console.log(status)
     )
+
+    // set value to change whole form
+    this.signupForm.setValue({
+      'userData': {
+        'username': 'Default User',
+        'email': 'superuser@wow.org'
+      },
+      'gender': 'male',
+      'hobbies': []
+    })
+
+    // patch value to change certain controls
+    this.signupForm.patchValue({
+      'userData': {
+        'username': 'Mega User'
+      }
+    })
   }
 
   onSubmit() {
     console.log(this.signupForm);
+    this.signupForm.reset({
+      'gender': 'male'
+    });
   }
 
   onAddHobby() {
