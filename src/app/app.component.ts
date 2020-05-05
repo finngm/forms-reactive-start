@@ -9,11 +9,12 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 export class AppComponent implements OnInit{
   genders = ['male', 'female'];
   signupForm: FormGroup;
+  forbiddenUsernames = ['Bob', 'Bill'];
 
   ngOnInit() {
     this.signupForm = new FormGroup({
       'userData': new FormGroup({
-        'username': new FormControl(null, Validators.required),
+        'username': new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
         'email': new FormControl(null, [Validators.required, Validators.email])
       }),
       'gender': new FormControl('male'),
@@ -33,5 +34,13 @@ export class AppComponent implements OnInit{
   // returns the array of controls held in 'hobbies'
   getControls() {
     return (<FormArray>this.signupForm.get('hobbies')).controls;
+  }
+
+  // method returns a key value pair where 's' is the key name and the boolean is the value
+  forbiddenNames(control: FormControl): {[s: string]: boolean} {
+    if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
+      return {'forbiddenName': true};
+    }
+    return null;
   }
 }
